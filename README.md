@@ -3,6 +3,8 @@
 ## Overview
 This repository provides a base class, `DivergentSystem`, for compiling and running CUDA kernels from Python via PyCUDA, plus utilities for computing trajectories and chaos heatmaps and for plotting results. Several example implementations are included. These instructions are written for Windows users. Other OS users should be able to adapt the steps fairly straightforwardly.
 
+Some examples of the sorts of plots that may be achieved using this software can be seen here <https://7thsoftware.co.uk/chaos/>.
+
 Technical note: the CUDA kernels are passed to `pycuda.compiler.SourceModule`, compiled by NVCC, then launched through the CUDA driver API. It is assumed that you have a suitable NVIDA graphics card (GPUs) availble (not sure? check here <https://developer.nvidia.com/cuda-gpus>).
 
 ---
