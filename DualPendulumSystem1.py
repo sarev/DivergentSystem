@@ -498,13 +498,14 @@ if __name__ == "__main__":
     z = 0
     instance.base = (-1.1*np.pi, -1.1*np.pi, z)
     instance.limit = (1.1*np.pi, 1.1*np.pi, z)
-    divs = 255 if preview else 1023
-    # instance.calc_stride(divs)
-    # steps = 5000
-    # print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
-    # heatmap = instance.get_heatmap(steps=steps)
-    # p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
-    # p.close()
+    divs = 1023
+    instance.calc_stride(divs)
+    steps = 5000
+    print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+    heatmap = instance.get_heatmap(steps=steps)
+    p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=True, save=False)
+    p.close()
+    exit()
 
     # -- Content
     #

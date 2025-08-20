@@ -943,7 +943,7 @@ class DivergentSystem(ABC):
         else:
             # No. New window...
             print("New plot")
-            fig = plt.figure(figsize=(10, 8))
+            fig = plt.figure(figsize=(14, 8))
             ax = fig.add_subplot(111, projection="3d")
 
             fig.patch.set_facecolor(DivergentSystem._bg_col)   # figure background (margins)
