@@ -363,6 +363,7 @@ class ShimizuMoriokaSystem(DivergentSystem):
 
 if __name__ == "__main__":
     import argparse
+    import pickle
 
     # Test harness aligned
     parser = argparse.ArgumentParser(
@@ -380,12 +381,12 @@ if __name__ == "__main__":
     instance = ShimizuMoriokaSystem()
     instance.config = (args.a, args.b)
 
-    origin = tuple(args.origin)
-    steps = args.steps
+    # origin = tuple(args.origin)
+    # steps = args.steps
 
-    print(f"{instance.__class__.__name__} variables {instance.variables} are {instance.config}")
-    print(f"origin {origin}")
-    print(f"iterate for {steps} steps")
+    # print(f"{instance.__class__.__name__} variables {instance.variables} are {instance.config}")
+    # print(f"origin {origin}")
+    # print(f"iterate for {steps} steps")
 
     # Single trajectory demo
     # traj = instance.get_trajectory(origin, steps)
@@ -393,7 +394,7 @@ if __name__ == "__main__":
     # instance.plot_trajectory(traj, origin, block=False)
 
     # Heatmap demo over a typical Shimizu-Morioka region
-    steps = 4000
+    # steps = 4000
     # instance.base = (-2.5, -2.5, -2.5)
     # instance.limit = (2.5, 2.5, 2.5)
 
@@ -416,36 +417,67 @@ if __name__ == "__main__":
     # p.close()
     # exit()
 
-    instance.base = (-2.5, 2.0, -1.5)
-    instance.limit = (-1.0, 2.0, 0.0)
-    instance.config = (0.54, 0.46)
+    # instance.base = (-2.5, 2.0, -1.5)
+    # instance.limit = (-1.0, 2.0, 0.0)
+    # instance.config = (0.54, 0.46)
 
-    divs = 1024
+    # divs = 1024
+    # instance.calc_stride(divs)
+    # print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+
+    # pkl = True
+    # if pkl:
+    #     heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
+    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl", 'wb') as f:
+    #         pickle.dump(heatmap, f)
+    # if not pkl:
+    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl",'rb') as f:
+    #         heatmap = pickle.load(f)
+
+    # p = instance.plot_heatmap(heatmap, theme="inferno", equal=True, block=pkl, save=not pkl)
+    # p.close()
+    # exit()
+
+    # -- Content
+    #
+    # 3D heatmap
+    #
+    steps = 5000
+    divs = 255
+    instance.base = (-12.5, -12.5, -12.5)
+    instance.limit = (12.5, 12.5, 12.5)
     instance.calc_stride(divs)
-    print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
-
-    import pickle
-
-    pkl = True
-    if pkl:
-        heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
-        with open(f"{instance.__class__.__name__}-volume{divs}.pkl", 'wb') as f:
-            pickle.dump(heatmap, f)
-    if not pkl:
-        with open(f"{instance.__class__.__name__}-volume{divs}.pkl",'rb') as f:
-            heatmap = pickle.load(f)
-
-    p = instance.plot_heatmap(heatmap, theme="inferno", equal=True, block=pkl, save=not pkl)
+    heatmap = instance.get_heatmap(steps=steps)
+    # p = instance.plot_heatmap(heatmap, theme="inferno", equal=True, block=True, save=False)
+    p = instance.plot_heatmap(heatmap, theme="inferno", equal=True, block=False, save=True)
     p.close()
     exit()
 
-    x = 2.0
-    instance.base = (-2.5, x, -2.5)
-    instance.limit = (2.5, x, 2.5)
+    # -- Content
+    #
+    # 3D heatmap
+    #
+    steps = 200
+    divs = 255
+    instance.base = (-2.5, -2.5, -2.5)
+    instance.limit = (2.5, 2.5, 2.5)
+    instance.calc_stride(divs)
+    heatmap = instance.get_heatmap(steps=steps)
+    p = instance.plot_heatmap(heatmap, theme="inferno", equal=True, block=False, save=True)
+    p.close()
+    # exit()
+
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
+    y = 2.0
+    instance.base = (-2.5, y, -2.5)
+    instance.limit = (2.5, y, 2.5)
     divs = 1023
     instance.calc_stride(divs)
+    steps = 4000
     print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
-
     for var in range(0, 102, 3):
         a = var / 100.0
         b = 1.0 - a

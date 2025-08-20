@@ -257,6 +257,7 @@ class HalvorsenSystem(DivergentSystem):
 if __name__ == "__main__":
     # Test harness
     import argparse
+    import pickle
 
     parser = argparse.ArgumentParser(
         description="HalvorsenSystem test harness: set control variable and start point via CLI or use defaults.")
@@ -284,43 +285,135 @@ if __name__ == "__main__":
     # print(f"trajectory length {len(traj)}")
     # instance.plot_trajectory(traj, origin, block=False)
 
+    # steps = 500
+
+    # # divs = 255
+    # # instance.base = (0, -2.5, -2.5)
+    # # instance.limit = (5.0, 2.5, 2.5)
+
+    # divs = 1023
+    # instance.base = (0, -2.5, 1)
+    # instance.limit = (5.0, 2.5, 1)
+
+    # instance.calc_stride(divs)
+    # print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+
+    # pkl = True
+    # if pkl:
+    #     heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
+    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl", 'wb') as f:
+    #         pickle.dump(heatmap, f)
+    # if not pkl:
+    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl",'rb') as f:
+    #         heatmap = pickle.load(f)
+
+    # p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=pkl, save=not pkl)
+    # p.close()
+    # exit()
+
+    # steps = 500
+    # divs = 1024
+    # print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+
+    # for y in range(-350, 350, 4):
+    #     instance.base = (0, y / 100.0, -3.5)
+    #     instance.limit = (5, y / 100.0, 3.5)
+    #     instance.calc_stride(divs)
+    #     print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+    #     heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
+    #     p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=False, save=True)
+    #     p.close()
+
+    # -- Content
+    #
+    # 3D heatmap
+    #
     steps = 500
-
-    # divs = 255
-    # instance.base = (0, -2.5, -2.5)
-    # instance.limit = (5.0, 2.5, 2.5)
-
-    divs = 1023
-    instance.base = (0, -2.5, 1)
-    instance.limit = (5.0, 2.5, 1)
-
+    divs = 255
+    instance.base = (-2.5, -2.5, -2.5)
+    instance.limit = (2.5, 2.5, 2.5)
     instance.calc_stride(divs)
-    print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
-
-    import pickle
-
-    pkl = True
-    if pkl:
-        heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
-        with open(f"{instance.__class__.__name__}-volume{divs}.pkl", 'wb') as f:
-            pickle.dump(heatmap, f)
-    if not pkl:
-        with open(f"{instance.__class__.__name__}-volume{divs}.pkl",'rb') as f:
-            heatmap = pickle.load(f)
-
-    p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=pkl, save=not pkl)
+    heatmap = instance.get_heatmap(steps=steps)
+    p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=False, save=True)
     p.close()
-    exit()
+    # exit()
 
+    # -- Content
+    #
+    # 2D heatmap
+    #
+    steps = 1000
+    divs = 1023
+    z = 1.0
+    instance.base = (-2.5, -3.0, z)
+    instance.limit = (2.5, 3.0, z)
+    instance.calc_stride(divs)
+    heatmap = instance.get_heatmap(steps=steps)
+    p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=False, save=True)
+    p.close()
+    # exit()
+
+    # -- Content
+    #
+    # 2D heatmap
+    #
+    steps = 800
+    divs = 1023
+    y = 1.5
+    instance.base = (-2.5, y, -2.5)
+    instance.limit = (2.5, y, 2.5)
+    instance.calc_stride(divs)
+    heatmap = instance.get_heatmap(steps=steps)
+    p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=False, save=True)
+    p.close()
+    # exit()
+
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
+    instance.config = (1.9)
     steps = 500
-    divs = 1024
-    print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
-
-    for y in range(-350, 350, 4):
-        instance.base = (0, y / 100.0, -3.5)
-        instance.limit = (5, y / 100.0, 3.5)
+    divs = 1279
+    for y in range(-250, 250, 5):
+        instance.base = (-2.5, y / 100.0, -2.5)
+        instance.limit = (2.5, y / 100.0, 2.5)
         instance.calc_stride(divs)
         print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
-        heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
+
+        heatmap = instance.get_heatmap(steps=steps)
+        # p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=True, save=False)
+        p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=False, save=True)
+        p.close()
+
+    # -- Content
+    #
+    # 3D heatmap
+    #
+    steps = 600
+    divs = 255
+    instance.base = (-2.5, -2.5, -2.5)
+    instance.limit = (2.5, 2.5, 2.5)
+    instance.calc_stride(divs)
+    heatmap = instance.get_heatmap(steps=steps)
+    p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=False, save=True)
+    p.close()
+    # exit()
+
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
+    steps = 2000
+    divs = 1279
+    for c in range(100, 251, 2):
+        instance.config = (c / 100.0)
+        instance.base = (-2.5, -2.5, 0.5)
+        instance.limit = (2.5, 2.5, 0.5)
+        instance.calc_stride(divs)
+        print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+
+        heatmap = instance.get_heatmap(steps=steps)
+        # p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=True, save=False)
         p = instance.plot_heatmap(heatmap, theme="BuPu_r", equal=True, block=False, save=True)
         p.close()

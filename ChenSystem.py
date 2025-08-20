@@ -310,41 +310,41 @@ if __name__ == "__main__":
     # p.close()
     # exit()
 
-    # Heatmap demo over a typical Chen region
-    divs = 255
-    instance.base = (1.0, -20.0, -0.5)
-    instance.limit = (41.0, 20.0, 40.0)
+    # # Heatmap demo over a typical Chen region
+    # divs = 255
+    # instance.base = (1.0, -20.0, -0.5)
+    # instance.limit = (41.0, 20.0, 40.0)
 
-    divs = 255
-    instance.base = (-50.0, -50.0, -50)
-    instance.limit = (50.0, 50.0, 50.0)
+    # divs = 255
+    # instance.base = (-50.0, -50.0, -50)
+    # instance.limit = (50.0, 50.0, 50.0)
 
-    divs = 767
-    instance.base = (-50.0, -50.0, 0)
-    instance.limit = (50.0, 50.0, 0)
+    # divs = 767
+    # instance.base = (-50.0, -50.0, 0)
+    # instance.limit = (50.0, 50.0, 0)
 
-    instance.calc_stride(divs)
-    steps = 1500
+    # instance.calc_stride(divs)
+    # steps = 1500
 
-    import time
-    t = time.time()
+    # import time
+    # t = time.time()
 
-    pkl = True
-    if pkl:
-        # Calculate and save heatmap...
-        heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
-        with open(f"{instance.__class__.__name__}-volume{divs}.pkl", 'wb') as f:
-            pickle.dump(heatmap, f)
-    if not pkl:
-        # Load heatmap we saved earlier...
-        with open(f"{instance.__class__.__name__}-volume{divs}.pkl",'rb') as f:
-            heatmap = pickle.load(f)
+    # pkl = True
+    # if pkl:
+    #     # Calculate and save heatmap...
+    #     heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
+    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl", 'wb') as f:
+    #         pickle.dump(heatmap, f)
+    # if not pkl:
+    #     # Load heatmap we saved earlier...
+    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl",'rb') as f:
+    #         heatmap = pickle.load(f)
 
-    print(time.time()-t)
+    # print(time.time()-t)
 
-    p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=pkl, save=not pkl)
-    p.close()
-    exit()
+    # p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=pkl, save=not pkl)
+    # p.close()
+    # exit()
 
     # preview = False
 
@@ -361,18 +361,112 @@ if __name__ == "__main__":
     #     p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=preview, save=not preview)
     #     p.close()
 
+    # # -- Content
+    # #
+    # # 3D heatmap
+    # #
+    # steps = 1500
+    # divs = 255
+    # instance.base = (-50.0, -50.0, -50)
+    # instance.limit = (50.0, 50.0, 50.0)
+    # instance.calc_stride(divs)
+    # heatmap = instance.get_heatmap(steps=steps)
+    # p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=False, save=True)
+    # p.close()
+    # # exit()
 
+    # # -- Content
+    # #
+    # # 2D heatmap
+    # #
+    # steps = 600
+    # divs = 1023
+    # z = 0.0
+    # instance.base = (-50.0, -50.0, z)
+    # instance.limit = (50.0, 50.0, z)
+    # instance.calc_stride(divs)
+    # heatmap = instance.get_heatmap(steps=steps)
+    # p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=False, save=True)
+    # p.close()
+    # # exit()
+
+    # # -- Content
+    # #
+    # # 2D heatmap
+    # #
+    # steps = 800
+    # divs = 1023
+    # y = 1.5
+    # instance.base = (-15.5, y, -15.5)
+    # instance.limit = (15.5, y, 15.5)
+    # instance.calc_stride(divs)
+    # heatmap = instance.get_heatmap(steps=steps)
+    # p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=False, save=True)
+    # p.close()
+    # exit()
+
+    # # -- Content
+    # #
+    # # 2D heatmap animation frames
+    # #
     # steps = 500
     # divs = 511 if preview else 1023
-    # for x in range(-150, 150, 2):
-    #     instance.base = (-50.0, x, -50.0)
-    #     instance.limit = (50.0, x, 50.0)
-    #     # instance.base = (-50.0, -50.0, x)
-    #     # instance.limit = (50.0, 50.0, x)
+    # for y in range(-150, 150, 2):
+    #     instance.base = (-50.0, y, -50.0)
+    #     instance.limit = (50.0, y, 50.0)
+    #     # instance.base = (-50.0, -50.0, z)
+    #     # instance.limit = (50.0, 50.0, z)
 
     #     instance.calc_stride(divs)
     #     print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
 
     #     heatmap = instance.get_heatmap(steps=steps)
-    #     p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=preview, save=not preview)
+    #     p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=False, save=True)
     #     p.close()
+
+    # # -- Content
+    # #
+    # # 3D heatmap
+    # #
+    # steps = 600
+    # divs = 255
+    # instance.base = (-2.5, -2.5, -2.5)
+    # instance.limit = (2.5, 2.5, 2.5)
+    # instance.calc_stride(divs)
+    # heatmap = instance.get_heatmap(steps=steps)
+    # p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=False, save=True)
+    # p.close()
+    # # exit()
+
+    # # -- Content
+    # #
+    # # 2D heatmap animation frames
+    # #
+    # steps = 2000
+    # divs = 1279
+    # for c in range(100, 251, 2):
+    #     instance.config = (c / 100.0)
+    #     instance.base = (-2.5, -2.5, 0.5)
+    #     instance.limit = (2.5, 2.5, 0.5)
+    #     instance.calc_stride(divs)
+    #     print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+
+    #     heatmap = instance.get_heatmap(steps=steps)
+    #     # p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=True, save=False)
+    #     p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=False, save=True)
+    #     p.close()
+
+    # -- Content
+    #
+    # 2D heatmap
+    #
+    steps = 800
+    divs = 1023
+    y = 0.0
+    instance.base = (-50.0, y, -50.0)
+    instance.limit = (50.0, y, 50.0)
+    instance.calc_stride(divs)
+    heatmap = instance.get_heatmap(steps=steps)
+    p = instance.plot_heatmap(heatmap, theme="GnBu_r", equal=True, block=False, save=True)
+    p.close()
+    exit()

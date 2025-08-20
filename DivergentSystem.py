@@ -324,7 +324,7 @@ class DivergentSystem(ABC):
 
         cc = self._cc_tag_for_device(dev_index)
         h  = hashlib.sha1(src.encode("utf-8")).hexdigest()[:12]
-        return os.path.join(self._cache_dir, f"{kernel_name}-{cc}-{h}.ptx")
+        return os.path.join(self._cache_dir, f"{self.__class__.__name__}-{kernel_name}-{cc}-{h}.ptx")
 
     def _make_unique_build_subdir(self, kernel_name: str) -> str:
         """

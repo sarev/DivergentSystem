@@ -486,46 +486,30 @@ if __name__ == "__main__":
     # print(f"trajectory length {len(trajectory)}")
     # instance.plot_trajectory(trajectory, origin, block=False)
 
-    # NOTE TO SELF: there's no point doing a 3D heatmap because the x,y axes control the starting
-    # angles and z is ignored, so the shape will be repeating at all values of z.
-
     preview = False
 
-    steps = 5000
-    divs = 255 if preview else 1023
-
+    # -- Content
+    #
+    # 3D heatmap
+    #
+    # NOTE TO SELF: there's no point doing a 3D heatmap because the x,y axes control the starting
+    # angles and z is ignored, so the shape will be repeating at all values of z.
+    #
     z = 0
     instance.base = (-1.1*np.pi, -1.1*np.pi, z)
     instance.limit = (1.1*np.pi, 1.1*np.pi, z)
-    instance.calc_stride(divs)
-    print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
-
-    # import pickle
-
-    # pkl = True
-    # if pkl:
-    #     heatmap = instance.get_heatmap(perturbation = (1e-8, 0, 0), steps=steps)
-    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl", 'wb') as f:
-    #         pickle.dump(heatmap, f)
-    # if not pkl:
-    #     with open(f"{instance.__class__.__name__}-volume{divs}.pkl",'rb') as f:
-    #         heatmap = pickle.load(f)
-
-    # p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=True)
+    divs = 255 if preview else 1023
+    # instance.calc_stride(divs)
+    # steps = 5000
+    # print(f"steps {steps} base {instance.base} limit {instance.limit} stride {instance.stride} config {instance.config}")
+    # heatmap = instance.get_heatmap(steps=steps)
+    # p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
     # p.close()
-    # exit()
 
-    # for steps in [8, 16, 32, 64, 96, 128, 192, 256, 384, 512, 768, 1024]:
-    #     print(f"Creating plot for {steps} steps...")
-
-    #     # Compute the heatmap for this system using the specified configuration and state space
-    #     heatmap = instance.get_heatmap(steps=steps)
-
-    #     # Display a plot of the heatmap
-    #     p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=False, save=True)
-    #     p.close()
-
-
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
     # Gradually increasing the resolution of the plot
     steps = 750
     res = 4
@@ -546,73 +530,88 @@ if __name__ == "__main__":
         inc = int(res * 0.1)
         res += 1 if inc < 1 else inc
 
-    # instance.calc_stride(divs)
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
+    # Gradually increasing the number of iterations
+    instance.calc_stride(divs)
+    steps = 2
+    while steps < 5000:
+        print(f"Creating plot for {steps}...")
 
-    # # Gradually increasing the number of iterations
-    # steps = 2
-    # while steps < 5000:
-    #     print(f"Creating plot for {steps}...")
+        # Compute the heatmap for this system using the specified configuration and state space
+        heatmap = instance.get_heatmap(steps=int(steps))
 
-    #     # Compute the heatmap for this system using the specified configuration and state space
-    #     heatmap = instance.get_heatmap(steps=int(steps))
+        # Display a plot of the heatmap
+        p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
+        p.close()
+        if preview:
+            break
+        steps = steps * 1.5
 
-    #     # Display a plot of the heatmap
-    #     p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
-    #     p.close()
-    #     if preview:
-    #         break
-    #     steps = steps * 1.5
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
+    # Gradually increasing the first joint's angular velocity (omega1)
+    steps = 550
+    omega1 = -np.pi
+    while omega1 < np.pi:
+        instance.config = (omega1, args.omega2, 1.0, args.gravity)
 
-    # # Gradually increasing the first joint's angular velocity (omega1)
-    # steps = 550
-    # omega1 = -np.pi
-    # while omega1 < np.pi:
-    #     instance.config = (omega1, args.omega2, 1.0, args.gravity)
+        print(f"Creating plot for omega1 {omega1}...")
 
-    #     print(f"Creating plot for omega1 {omega1}...")
+        # Compute the heatmap for this system using the specified configuration and state space
+        heatmap = instance.get_heatmap(steps=steps)
 
-    #     # Compute the heatmap for this system using the specified configuration and state space
-    #     heatmap = instance.get_heatmap(steps=steps)
+        # Display a plot of the heatmap
+        p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
+        p.close()
+        if preview:
+            break
+        omega1 += 0.05
 
-    #     # Display a plot of the heatmap
-    #     p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
-    #     p.close()
-    #     if preview:
-    #         break
-    #     omega1 += 0.05
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
+    # Gradually increasing the second joint's angular velocity (omega2)
+    omega2 = -np.pi
+    while omega2 < np.pi:
+        instance.config = (args.omega1, omega2, 1.0, args.gravity)
 
-    # # Gradually increasing the second joint's angular velocity (omega2)
-    # omega2 = -np.pi
-    # while omega2 < np.pi:
-    #     instance.config = (args.omega1, omega2, 1.0, args.gravity)
+        print(f"Creating plot for omega2 {omega2}...")
 
-    #     print(f"Creating plot for omega2 {omega2}...")
+        # Compute the heatmap for this system using the specified configuration and state space
+        heatmap = instance.get_heatmap(steps=steps)
 
-    #     # Compute the heatmap for this system using the specified configuration and state space
-    #     heatmap = instance.get_heatmap(steps=steps)
+        # Display a plot of the heatmap
+        p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
+        p.close()
+        if preview:
+            break
+        omega2 += 0.05
 
-    #     # Display a plot of the heatmap
-    #     p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
-    #     p.close()
-    #     if preview:
-    #         break
-    #     omega2 += 0.05
+    # -- Content
+    #
+    # 2D heatmap animation frames
+    #
+    # Gradually increasing the second arm's length ratio
+    ratio = 0.1
+    while ratio < 3.0:
+        instance.config = (args.omega1, args.omega2, ratio, args.gravity)
 
-    # # Gradually increasing the second arm's length ratio
-    # ratio = 0.1
-    # while ratio < 3.0:
-    #     instance.config = (args.omega1, args.omega2, ratio, args.gravity)
+        print(f"Creating plot for length ratio {ratio}...")
 
-    #     print(f"Creating plot for length ratio {ratio}...")
+        # Compute the heatmap for this system using the specified configuration and state space
+        heatmap = instance.get_heatmap(steps=steps)
 
-    #     # Compute the heatmap for this system using the specified configuration and state space
-    #     heatmap = instance.get_heatmap(steps=steps)
-
-    #     # Display a plot of the heatmap
-    #     p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
-    #     p.close()
-    #     if preview:
-    #         break
-    #     ratio += 0.05
+        # Display a plot of the heatmap
+        p = instance.plot_heatmap(heatmap, theme="YlGnBu", equal=True, block=preview, save=not preview)
+        p.close()
+        if preview:
+            break
+        ratio += 0.05
 
     print("Finished!")

@@ -1,0 +1,4 @@
+__pycache__
+CUDA_cache
+*.png
+*.mp4
